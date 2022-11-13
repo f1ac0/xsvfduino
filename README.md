@@ -1,3 +1,10 @@
+This is a fork of the [xsvfduino by wschutzer](https://github.com/wschutzer/xsvfduino). The original project now seems to be unmaintained and I made a few modifications:
+- Python3 send_xsvf : this update works with current (2022) linux distributions since python2 is being phased out.
+- Change in firmware GPIO access to allow it to compile with recent [Arduino_Core_STM32](https://github.com/stm32duino/Arduino_Core_STM32) (GPIO syntax a little different).
+- Also changed "setPort" to toggle one output at a time, the previous behaviour (change all the outputs at the same time as the clock pulse) was not working for me when choosing other GPIOs than the default ones.
+- Integrated [a change proposed by SchemingWeasels](https://github.com/wschutzer/xsvfduino/pull/2/commits/f302d4529417a65f5ecc7f8c9c19df2a50801306) for spartan FPGAs although I don't have a suitable device to test it.
+- Added a note on how to remove the write protection from XC95*XL chips. Some programming errors might be due to this write protection especially for low cost parts from unreliable sources.
+
 xsvfduino
 =========
 
@@ -49,4 +56,4 @@ I am not a developer and programming is not my thing. I am posting this in the h
 
 CREDITS
 =======
-This project was inspired by Mike Tsao's [JTAGWhispeer](https://github.com/sowbug/JTAGWhisperer) which sadly seems to have been discontinued. Mine is a crude attempt at picking up where Mike has left off.
+This project was inspired by Mike Tsao's [JTAGWhisperer](https://github.com/sowbug/JTAGWhisperer) which sadly seems to have been discontinued. Mine is a crude attempt at picking up where Mike has left off.

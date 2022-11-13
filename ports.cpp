@@ -8,14 +8,10 @@
 /* 12/01/2008:  Same code as before (original v5.01).  */
 /*              Updated comments to clarify instructions.*/
 /*              Add print in setPort for xapp058_example.exe.*/
+/* 12/11/2022:  STM32 GPIO for xsvfduino               */ 
 /*******************************************************/
 #include "ports.h"
-/*#include "prgispx.h"*/
-// #include "stm32_gpio.h"
  
-static uint32_t port_ = 0;  /* Port vlaues */
-
-/*BYTE *xsvf_data=0;*/
 
 #if 1
 inline void DLY()
@@ -50,32 +46,15 @@ void setPort(uint8_t p,uint8_t val)
     switch(p)
     {
       case TMS:
-        // g_iTMS = val;
-        if (val) port_ |= 1u << TMS_PIN; else port_ &= ~(1u << TMS_PIN);
+        if (val) GPIOB->BSRR = 1u << TMS_PIN; else GPIOB->BSRR = 1u << (TMS_PIN+16);
         break;
         
       case TDI:
-        // g_iTDI = val;
-        if (val) port_ |= 1u << TDI_PIN; else port_ &= ~(1u << TDI_PIN);
+        if (val) GPIOB->BSRR = 1u << TDI_PIN; else GPIOB->BSRR = 1u << (TDI_PIN+16);
         break;
         
       case TCK:
-        // g_iTCK = val;
-        if (val) port_ |= 1u << TCK_PIN; else port_ &= ~(1u << TCK_PIN);
-#if 1      
-        // uint32_t r = GPIOB->ODR;
-        // if (g_iTMS) r |= 1u << TMS_PIN; else r &= ~(1u << TMS_PIN);
-        // if (g_iTDI) r |= 1u << TDI_PIN; else r &= ~(1u << TDI_PIN);
-        // if (g_iTCK) r |= 1u << TCK_PIN; else r &= ~(1u << TCK_PIN);
-        // GPIOB->ODR = r;
-        //GPIOB->ODR = ( GPIOB->ODR & ~( (1u << TMS_PIN) | (1u << TDI_PIN) | (1u << TCK_PIN) ) ) | port_;
-        GPIOB->regs->ODR = ( GPIOB->regs->ODR & ~( (1u << TMS_PIN) | (1u << TDI_PIN) | (1u << TCK_PIN) ) ) | port_;
-
-#else
-        digitalWrite( TMS, g_iTMS );
-        digitalWrite( TDI, g_iTDI );
-        digitalWrite( TCK, g_iTCK );
-#endif
+        if (val) GPIOB->BSRR = 1u << TCK_PIN; else GPIOB->BSRR = 1u << (TCK_PIN+16);
         DLY();
         break;
         
@@ -96,7 +75,6 @@ void pulseClock()
 void readByte(uint8_t *data)
 {
   *data = read_data();
-    /**data=*xsvf_data++;*/
 }
 
 /* waitTime:  Implement as follows: */
@@ -110,8 +88,8 @@ void readByte(uint8_t *data)
 /*                              requirement is also satisfied.               */
 void waitTime(uint32_t microsec)
 {
-#if 0
-    static long tckCyclesPerMicrosec    = 72/10; /* must be at least 1 */
+#if 1
+    static long tckCyclesPerMicrosec    = 1; /* must be at least 1 ; was 72/10 in original xsvfduino */
     long        tckCycles   = microsec * tckCyclesPerMicrosec;
     long        i;
 
@@ -126,7 +104,7 @@ void waitTime(uint32_t microsec)
     }
 #endif
 
-#if 1
+#if 0
    uint32_t t0 = micros();
    while( micros()-t0 < microsec )
    {

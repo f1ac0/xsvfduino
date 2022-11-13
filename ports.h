@@ -13,11 +13,11 @@
 /* compilers don't like enumerated types */
 
 /*
- Pin assignment on the bluepill:
+ Default pin assignment on the bluepill:
  TCK - PB6
  TMS - PB7
  TDI - PB8
- TDO - PB9
+ TDO - PB5
  */
 #define TCK PB6
 #define TCK_PIN 6
@@ -40,8 +40,7 @@ extern void setPort(uint8_t p, uint8_t val);
 /* read the TDO bit and store it in val */
 inline int readTDOBit()
 {
-  // return digitalRead(TDO);
-  return (GPIOB->regs->IDR & (1u << TDO_PIN)) != 0;
+  return (GPIOB->IDR & (1u << TDO_PIN)) != 0;
 }
 
 /* make clock go down->up->down*/
