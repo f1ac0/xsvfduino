@@ -21,12 +21,16 @@
  */
 #define TCK PB6
 #define TCK_PIN 6
+#define TCK_PORT GPIOB
 #define TMS PB7
 #define TMS_PIN 7
+#define TMS_PORT GPIOB
 #define TDI PB8
 #define TDI_PIN 8
+#define TDI_PORT GPIOB
 #define TDO PB5
 #define TDO_PIN 5
+#define TDO_PORT GPIOB
 
 extern uint8_t read_data();
 extern void u_sleep( uint32_t m );
@@ -40,7 +44,7 @@ extern void setPort(uint8_t p, uint8_t val);
 /* read the TDO bit and store it in val */
 inline int readTDOBit()
 {
-  return (GPIOB->IDR & (1u << TDO_PIN)) != 0;
+  return (TDO_PORT->IDR & (1u << TDO_PIN)) != 0;
 }
 
 /* make clock go down->up->down*/

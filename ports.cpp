@@ -46,15 +46,15 @@ void setPort(uint8_t p,uint8_t val)
     switch(p)
     {
       case TMS:
-        if (val) GPIOB->BSRR = 1u << TMS_PIN; else GPIOB->BSRR = 1u << (TMS_PIN+16);
+        if (val) TMS_PORT->BSRR = 1u << TMS_PIN; else TMS_PORT->BSRR = 1u << (TMS_PIN+16);
         break;
         
       case TDI:
-        if (val) GPIOB->BSRR = 1u << TDI_PIN; else GPIOB->BSRR = 1u << (TDI_PIN+16);
+        if (val) TDI_PORT->BSRR = 1u << TDI_PIN; else TDI_PORT->BSRR = 1u << (TDI_PIN+16);
         break;
         
       case TCK:
-        if (val) GPIOB->BSRR = 1u << TCK_PIN; else GPIOB->BSRR = 1u << (TCK_PIN+16);
+        if (val) TCK_PORT->BSRR = 1u << TCK_PIN; else TCK_PORT->BSRR = 1u << (TCK_PIN+16);
         DLY();
         break;
         
